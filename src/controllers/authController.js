@@ -205,18 +205,8 @@ const getMe = async (req, res, next) => {
 // @access  Private
 const updateProfile = async (req, res, next) => {
   try {
-    const { name, email } = req.body;
+    const { name } = req.body;
     const user = req.user;
-
-    // Check if email is being changed and if it already exists
-    if (email && email !== user.email) {
-      const existingUser = await User.findOne({ email });
-      if (existingUser) {
-        return sendErrorResponse(res, 'Email already exists', 400);
-      }
-      user.email = email;
-      user.isEmailVerified = false; // Reset email verification if email is changed
-    }
 
     if (name) {
       user.name = name;
@@ -248,10 +238,12 @@ const updateProfile = async (req, res, next) => {
 const changePassword = async (req, res, next) => {
   try {
     const { currentPassword, newPassword } = req.body;
+    
     const user = await User.findById(req.user._id).select('+password');
 
     // Check current password
     const isCurrentPasswordCorrect = await user.comparePassword(currentPassword);
+    
     if (!isCurrentPasswordCorrect) {
       return sendErrorResponse(res, 'Current password is incorrect', 400);
     }
