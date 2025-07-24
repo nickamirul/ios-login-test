@@ -1,4 +1,4 @@
-# Backend iOS Auth API
+# Backend iOS Auth API (Testing Purpose for Mobile Development)
 
 A robust Node.js Express backend with MongoDB for user authentication, built with security and scalability in mind.
 
